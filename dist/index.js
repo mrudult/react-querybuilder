@@ -5657,6 +5657,7 @@ var Rule = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Rule.__proto__ || Object.getPrototypeOf(Rule)).call.apply(_ref, [this].concat(args))), _this), _this.onFieldChanged = function (value) {
       _this.onElementChanged('field', value);
+      _this.onElementChanged('operator', '');
       _this.onElementChanged('value', '');
     }, _this.onOperatorChanged = function (value) {
       _this.onElementChanged('operator', value);
