@@ -62,8 +62,6 @@ export default class Rule extends React.Component {
 
   onFieldChanged = (value) => {
     this.onElementChanged('field', value);
-    this.onElementChanged('operator', '');
-    this.onElementChanged('value', '');
   };
 
   onOperatorChanged = (value) => {
