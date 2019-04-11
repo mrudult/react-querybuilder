@@ -31,6 +31,31 @@ export default class RuleGroup extends React.Component {
           rules: rules,
           level: level
         })}
+        {rules.map((r) => {
+          return isRuleGroup(r) ? (
+            <RuleGroup
+              key={r.id}
+              id={r.id}
+              schema={this.props.schema}
+              parentId={this.props.id}
+              combinator={r.combinator}
+              translations={this.props.translations}
+              rules={r.rules}
+            />
+          ) : (
+            <Rule
+              key={r.id}
+              id={r.id}
+              field={r.field}
+              value={r.value}
+              operator={r.operator}
+              schema={this.props.schema}
+              parentId={this.props.id}
+              translations={this.props.translations}
+              onRuleRemove={onRuleRemove}
+            />
+          );
+        })}
         {React.createElement(controls.addRuleAction, {
           label: translations.addRule.label,
           title: translations.addRule.title,
@@ -57,31 +82,6 @@ export default class RuleGroup extends React.Component {
               level: level
             })
           : null}
-        {rules.map((r) => {
-          return isRuleGroup(r) ? (
-            <RuleGroup
-              key={r.id}
-              id={r.id}
-              schema={this.props.schema}
-              parentId={this.props.id}
-              combinator={r.combinator}
-              translations={this.props.translations}
-              rules={r.rules}
-            />
-          ) : (
-            <Rule
-              key={r.id}
-              id={r.id}
-              field={r.field}
-              value={r.value}
-              operator={r.operator}
-              schema={this.props.schema}
-              parentId={this.props.id}
-              translations={this.props.translations}
-              onRuleRemove={onRuleRemove}
-            />
-          );
-        })}
       </div>
     );
   }
