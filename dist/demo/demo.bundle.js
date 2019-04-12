@@ -7706,6 +7706,27 @@ var RuleGroup = function (_React$Component) {
           rules: rules,
           level: level
         }),
+        rules.map(function (r) {
+          return isRuleGroup(r) ? _react2.default.createElement(RuleGroup, {
+            key: r.id,
+            id: r.id,
+            schema: _this2.props.schema,
+            parentId: _this2.props.id,
+            combinator: r.combinator,
+            translations: _this2.props.translations,
+            rules: r.rules
+          }) : _react2.default.createElement(_Rule2.default, {
+            key: r.id,
+            id: r.id,
+            field: r.field,
+            value: r.value,
+            operator: r.operator,
+            schema: _this2.props.schema,
+            parentId: _this2.props.id,
+            translations: _this2.props.translations,
+            onRuleRemove: onRuleRemove
+          });
+        }),
         _react2.default.createElement(controls.addRuleAction, {
           label: translations.addRule.label,
           title: translations.addRule.title,
@@ -7729,28 +7750,7 @@ var RuleGroup = function (_React$Component) {
           handleOnClick: this.removeGroup,
           rules: rules,
           level: level
-        }) : null,
-        rules.map(function (r) {
-          return isRuleGroup(r) ? _react2.default.createElement(RuleGroup, {
-            key: r.id,
-            id: r.id,
-            schema: _this2.props.schema,
-            parentId: _this2.props.id,
-            combinator: r.combinator,
-            translations: _this2.props.translations,
-            rules: r.rules
-          }) : _react2.default.createElement(_Rule2.default, {
-            key: r.id,
-            id: r.id,
-            field: r.field,
-            value: r.value,
-            operator: r.operator,
-            schema: _this2.props.schema,
-            parentId: _this2.props.id,
-            translations: _this2.props.translations,
-            onRuleRemove: onRuleRemove
-          });
-        })
+        }) : null
       );
     }
   }, {
