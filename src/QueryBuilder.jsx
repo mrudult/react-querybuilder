@@ -100,7 +100,7 @@ export default class QueryBuilder extends React.Component {
   }
 
   static get defaultCombinators() {
-    return [{ name: 'and', label: 'AND' }, { name: 'or', label: 'OR' }];
+    return [{ name: 'all', label: 'All' }, { name: 'any', label: 'Any' }];
   }
 
   static get defaultControlClassnames() {
@@ -227,13 +227,13 @@ export default class QueryBuilder extends React.Component {
 
   createRule() {
     const { fields } = this.state.schema;
-    const field = fields[0].name;
+    const fact = fields[0].name;
 
     return {
       id: `r-${uniqueId()}`,
-      field,
+      fact,
       value: '',
-      operator: this.getOperators(field)[0].name
+      operator: this.getOperators(fact)[0].name
     };
   }
 
@@ -245,9 +245,9 @@ export default class QueryBuilder extends React.Component {
     };
   }
 
-  getOperators(field) {
+  getOperators(fact) {
     if (this.props.getOperators) {
-      const ops = this.props.getOperators(field);
+      const ops = this.props.getOperators(fact);
       if (ops) return ops;
     }
 
@@ -273,8 +273,8 @@ export default class QueryBuilder extends React.Component {
     Object.assign(rule, { [prop]: value });
 
     // Reset operator and value for field change
-    if (prop === 'field') {
-      Object.assign(rule, { operator: this.getOperators(rule.field)[0].name, value: '' });
+    if (prop === 'fact') {
+      Object.assign(rule, { operator: this.getOperators(rule.fact)[0].name, value: '' });
     }
 
     this.setState({ root: this.state.root });

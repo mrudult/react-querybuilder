@@ -26,45 +26,45 @@ const preparedQueries = {
     rules: [
       {
         id: 'r-32ef0844-07e3-4f3b-aeca-3873da3e208b',
-        field: 'firstName',
+        fact: 'firstName',
         value: 'Steve',
         operator: '='
       },
       {
         id: 'r-3db9ba21-080d-4a5e-b4da-d949b4ad055b',
-        field: 'lastName',
+        fact: 'lastName',
         value: 'Vai',
         operator: '='
       }
     ],
-    combinator: 'and'
+    combinator: 'all'
   },
   secondary: {
     id: 'g-15e72d98-557f-4a09-af90-6d7afc05b0f7',
     rules: [
       {
-        field: 'age',
+        fact: 'age',
         id: 'r-45b166dd-d69a-4008-9587-fe796aeda496',
         operator: '>',
         value: '28'
       },
       {
-        field: 'isMusician',
+        fact: 'isMusician',
         id: 'r-db6fded6-bd8c-4b4f-9a33-a00f7417a9a9',
         operator: '=',
         value: 'true'
       },
       {
-        field: 'instrument',
+        fact: 'instrument',
         id: 'r-df23ba2b-e600-491d-967c-116ade6fe45e',
         operator: '=',
         value: 'Guitar'
       }
     ],
-    combinator: 'or'
+    combinator: 'any'
   },
   generic: {
-    combinator: 'and',
+    combinator: 'all',
     rules: []
   }
 };

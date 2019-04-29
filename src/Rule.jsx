@@ -5,7 +5,7 @@ export default class Rule extends React.Component {
     return {
       id: null,
       parentId: null,
-      field: null,
+      fact: null,
       operator: null,
       value: null,
       schema: null
@@ -14,7 +14,7 @@ export default class Rule extends React.Component {
 
   render() {
     const {
-      field,
+      fact,
       operator,
       value,
       translations,
@@ -26,22 +26,22 @@ export default class Rule extends React.Component {
         {React.createElement(controls.fieldSelector, {
           options: fields,
           title: translations.fields.title,
-          value: field,
+          value: fact,
           className: `rule-fields ${classNames.fields}`,
           handleOnChange: this.onFieldChanged,
           level: level
         })}
         {React.createElement(controls.operatorSelector, {
-          field: field,
+          fact,
           title: translations.operators.title,
-          options: getOperators(field),
+          options: getOperators(fact),
           value: operator,
           className: `rule-operators ${classNames.operators}`,
           handleOnChange: this.onOperatorChanged,
           level: level
         })}
         {React.createElement(controls.valueEditor, {
-          field: field,
+          fact,
           title: translations.value.title,
           operator: operator,
           value: value,
@@ -61,9 +61,9 @@ export default class Rule extends React.Component {
   }
 
   onFieldChanged = (value) => {
-    this.onElementChanged('field', value);
-    this.onElementChanged('operator', '');
     this.onElementChanged('value', '');
+    this.onElementChanged('operator', '');
+    this.onElementChanged('fact', value);
   };
 
   onOperatorChanged = (value) => {
