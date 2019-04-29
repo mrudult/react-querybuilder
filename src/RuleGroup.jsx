@@ -43,18 +43,18 @@ export default class RuleGroup extends React.Component {
               rules={r.rules}
             />
           ) : (
-            <Rule
-              key={r.id}
-              id={r.id}
-              field={r.field}
-              value={r.value}
-              operator={r.operator}
-              schema={this.props.schema}
-              parentId={this.props.id}
-              translations={this.props.translations}
-              onRuleRemove={onRuleRemove}
-            />
-          );
+              <Rule
+                key={r.id}
+                id={r.id}
+                fact={r.fact}
+                value={r.value}
+                operator={r.operator}
+                schema={this.props.schema}
+                parentId={this.props.id}
+                translations={this.props.translations}
+                onRuleRemove={onRuleRemove}
+              />
+            );
         })}
         {React.createElement(controls.addRuleAction, {
           label: translations.addRule.label,
@@ -74,13 +74,13 @@ export default class RuleGroup extends React.Component {
         })}
         {this.hasParentGroup()
           ? React.createElement(controls.removeGroupAction, {
-              label: translations.removeGroup.label,
-              title: translations.removeGroup.title,
-              className: `ruleGroup-remove ${classNames.removeGroup}`,
-              handleOnClick: this.removeGroup,
-              rules: rules,
-              level: level
-            })
+            label: translations.removeGroup.label,
+            title: translations.removeGroup.title,
+            className: `ruleGroup-remove ${classNames.removeGroup}`,
+            handleOnClick: this.removeGroup,
+            rules: rules,
+            level: level
+          })
           : null}
       </div>
     );

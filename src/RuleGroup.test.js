@@ -26,9 +26,9 @@ describe('<RuleGroup />', () => {
       isRuleGroup: (rule) => {
         return false;
       },
-      onPropChange: (prop, value, id) => {},
-      onRuleAdd: (rule, parentId) => {},
-      onGroupAdd: (ruleGroup, id) => {},
+      onPropChange: (prop, value, id) => { },
+      onRuleAdd: (rule, parentId) => { },
+      onGroupAdd: (ruleGroup, id) => { },
       createRule: () => {
         return _createRule(1);
       },
@@ -161,7 +161,7 @@ describe('<RuleGroup />', () => {
         .first()
         .props();
       expect(ruleProps.id).to.equal('rule_id_1');
-      expect(ruleProps.field).to.equal('field_1');
+      expect(ruleProps.fact).to.equal('fact_1');
       expect(ruleProps.operator).to.equal('operator_1');
       expect(ruleProps.value).to.equal('value_1');
     });
@@ -241,7 +241,7 @@ describe('<RuleGroup />', () => {
       const instance = shallow(<RuleGroup {...props} />).instance();
       instance.addRule(_mockEvent());
 
-      expect(actualRule).to.include.keys('id', 'field', 'operator', 'value');
+      expect(actualRule).to.include.keys('id', 'fact', 'operator', 'value');
       expect(actualId).to.equal('id');
     });
   });
@@ -317,7 +317,7 @@ describe('<RuleGroup />', () => {
   function _createRule(index) {
     return {
       id: 'rule_id_' + index,
-      field: 'field_' + index,
+      fact: 'fact_' + index,
       operator: 'operator_' + index,
       value: 'value_' + index
     };
@@ -333,8 +333,8 @@ describe('<RuleGroup />', () => {
 
   function _mockEvent() {
     return {
-      preventDefault: () => {},
-      stopPropagation: () => {}
+      preventDefault: () => { },
+      stopPropagation: () => { }
     };
   }
 });

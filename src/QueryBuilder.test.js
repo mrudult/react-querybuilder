@@ -55,7 +55,7 @@ describe('<QueryBuilder />', () => {
     });
 
     it('should call onQueryChange', () => {
-      wrapper.instance()._notifyQueryChange(() => {});
+      wrapper.instance()._notifyQueryChange(() => { });
       wrapper.update();
       expect(wrapper.props().query).to.equal(null);
     });
@@ -65,7 +65,7 @@ describe('<QueryBuilder />', () => {
       expect(queryChange.calledOnce).to.equal(true);
 
       const query = wrapper.state().root;
-      wrapper.instance()._notifyQueryChange(() => {});
+      wrapper.instance()._notifyQueryChange(() => { });
       wrapper.update();
 
       expect(queryChange.callCount).to.equal(2);
@@ -80,7 +80,7 @@ describe('<QueryBuilder />', () => {
       rules: [
         {
           id: 'r-12345',
-          field: 'firstName',
+          fact: 'firstName',
           value: 'Test',
           operator: '='
         }
@@ -100,7 +100,7 @@ describe('<QueryBuilder />', () => {
       combinator: 'and',
       rules: [
         {
-          field: 'firstName',
+          fact: 'firstName',
           value: 'Test without ID',
           operator: '='
         }
@@ -135,7 +135,7 @@ describe('<QueryBuilder />', () => {
 
     it('should have the Rule with the correct props', () => {
       const rule = wrapper.find('Rule');
-      expect(rule.props().field).to.equal('firstName');
+      expect(rule.props().fact).to.equal('firstName');
       expect(rule.props().value).to.equal('Test without ID');
       expect(rule.props().operator).to.equal('=');
     });
@@ -145,7 +145,7 @@ describe('<QueryBuilder />', () => {
       expect(rule.find('.rule-fields option')).to.have.length(3);
     });
 
-    it('should have a field selector with the correct field', () => {
+    it('should have a fact selector with the correct fact', () => {
       const rule = wrapper.find('Rule');
       expect(rule.find('.rule-fields select').props().value).to.equal('firstName');
     });
@@ -172,7 +172,7 @@ describe('<QueryBuilder />', () => {
       combinator: 'and',
       rules: [
         {
-          field: 'domainName',
+          fact: 'domainName',
           value: 'www.example.com',
           operator: '!='
         }
@@ -261,7 +261,7 @@ describe('<QueryBuilder />', () => {
       rules: [
         {
           id: '222',
-          field: 'firstName',
+          fact: 'firstName',
           value: 'Test',
           operator: '='
         }
@@ -276,7 +276,7 @@ describe('<QueryBuilder />', () => {
       wrapper.unmount();
     });
 
-    it('should get operators for field', () => {
+    it('should get operators for fact', () => {
       let operators = wrapper.state('schema').getOperators('firstName');
       expect(operators.length).to.equal(4);
     });
@@ -310,7 +310,7 @@ describe('<QueryBuilder />', () => {
       rules: [
         {
           id: 'r-0123456789',
-          field: 'lastName',
+          fact: 'lastName',
           value: 'Another Test',
           operator: '='
         }
@@ -318,7 +318,7 @@ describe('<QueryBuilder />', () => {
     };
 
     beforeEach(() => {
-      getOperators = sinon.spy((fields, wada=123) => {
+      getOperators = sinon.spy((fields, wada = 123) => {
         return [
           { name: 'custom-operator-1', label: 'Op. 1' },
           { name: 'custom-operator-2', label: 'Op. 2' },
@@ -340,7 +340,7 @@ describe('<QueryBuilder />', () => {
     });
   });
 
-  describe('when calculating the level of a rule', function() {
+  describe('when calculating the level of a rule', function () {
     let wrapper;
 
     beforeEach(() => {
@@ -356,13 +356,13 @@ describe('<QueryBuilder />', () => {
         rules: [
           {
             id: '222',
-            field: 'firstName',
+            fact: 'firstName',
             value: 'Test',
             operator: '='
           },
           {
             id: '333',
-            field: 'firstName',
+            fact: 'firstName',
             value: 'Test',
             operator: '='
           },
@@ -372,7 +372,7 @@ describe('<QueryBuilder />', () => {
             rules: [
               {
                 id: '555',
-                field: 'firstName',
+                fact: 'firstName',
                 value: 'Test',
                 operator: '='
               }
@@ -388,18 +388,18 @@ describe('<QueryBuilder />', () => {
       wrapper.unmount();
     });
 
-    it('should be 0 for the top level', function() {
+    it('should be 0 for the top level', function () {
       expect(wrapper.state('schema').getLevel('111')).to.equal(0);
       expect(wrapper.state('schema').getLevel('222')).to.equal(0);
       expect(wrapper.state('schema').getLevel('333')).to.equal(0);
     });
 
-    it('should be 1 for the second level', function() {
+    it('should be 1 for the second level', function () {
       expect(wrapper.state('schema').getLevel('444')).to.equal(1);
       expect(wrapper.state('schema').getLevel('555')).to.equal(1);
     });
 
-    it('should handle an invalid id', function() {
+    it('should handle an invalid id', function () {
       expect(wrapper.state('schema').getLevel('546')).to.equal(-1);
     });
   });

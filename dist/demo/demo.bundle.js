@@ -1744,39 +1744,39 @@ var preparedQueries = {
     id: 'g-8953ed65-f5ff-4b77-8d03-8d8788beb50b',
     rules: [{
       id: 'r-32ef0844-07e3-4f3b-aeca-3873da3e208b',
-      field: 'firstName',
+      fact: 'firstName',
       value: 'Steve',
       operator: '='
     }, {
       id: 'r-3db9ba21-080d-4a5e-b4da-d949b4ad055b',
-      field: 'lastName',
+      fact: 'lastName',
       value: 'Vai',
       operator: '='
     }],
-    combinator: 'and'
+    combinator: 'all'
   },
   secondary: {
     id: 'g-15e72d98-557f-4a09-af90-6d7afc05b0f7',
     rules: [{
-      field: 'age',
+      fact: 'age',
       id: 'r-45b166dd-d69a-4008-9587-fe796aeda496',
       operator: '>',
       value: '28'
     }, {
-      field: 'isMusician',
+      fact: 'isMusician',
       id: 'r-db6fded6-bd8c-4b4f-9a33-a00f7417a9a9',
       operator: '=',
       value: 'true'
     }, {
-      field: 'instrument',
+      fact: 'instrument',
       id: 'r-df23ba2b-e600-491d-967c-116ade6fe45e',
       operator: '=',
       value: 'Guitar'
     }],
-    combinator: 'or'
+    combinator: 'any'
   },
   generic: {
-    combinator: 'and',
+    combinator: 'all',
     rules: []
   }
 };
@@ -2146,13 +2146,13 @@ var QueryBuilder = function (_React$Component) {
     value: function createRule() {
       var fields = this.state.schema.fields;
 
-      var field = fields[0].name;
+      var fact = fields[0].name;
 
       return {
         id: 'r-' + (0, _v2.default)(),
-        field: field,
+        fact: fact,
         value: '',
-        operator: this.getOperators(field)[0].name
+        operator: this.getOperators(fact)[0].name
       };
     }
   }, {
@@ -2166,9 +2166,9 @@ var QueryBuilder = function (_React$Component) {
     }
   }, {
     key: 'getOperators',
-    value: function getOperators(field) {
+    value: function getOperators(fact) {
       if (this.props.getOperators) {
-        var ops = this.props.getOperators(field);
+        var ops = this.props.getOperators(fact);
         if (ops) return ops;
       }
 
@@ -2197,8 +2197,8 @@ var QueryBuilder = function (_React$Component) {
       Object.assign(rule, _defineProperty({}, prop, value));
 
       // Reset operator and value for field change
-      if (prop === 'field') {
-        Object.assign(rule, { operator: this.getOperators(rule.field)[0].name, value: '' });
+      if (prop === 'fact') {
+        Object.assign(rule, { operator: this.getOperators(rule.fact)[0].name, value: '' });
       }
 
       this.setState({ root: this.state.root });
@@ -2354,7 +2354,7 @@ var QueryBuilder = function (_React$Component) {
   }, {
     key: 'defaultCombinators',
     get: function get() {
-      return [{ name: 'and', label: 'AND' }, { name: 'or', label: 'OR' }];
+      return [{ name: 'all', label: 'All' }, { name: 'any', label: 'Any' }];
     }
   }, {
     key: 'defaultControlClassnames',
@@ -7718,7 +7718,7 @@ var RuleGroup = function (_React$Component) {
           }) : _react2.default.createElement(_Rule2.default, {
             key: r.id,
             id: r.id,
-            field: r.field,
+            fact: r.fact,
             value: r.value,
             operator: r.operator,
             schema: _this2.props.schema,
@@ -7816,9 +7816,9 @@ var Rule = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Rule.__proto__ || Object.getPrototypeOf(Rule)).call.apply(_ref, [this].concat(args))), _this), _this.onFieldChanged = function (value) {
-      _this.onElementChanged('field', value);
-      _this.onElementChanged('operator', '');
       _this.onElementChanged('value', '');
+      _this.onElementChanged('operator', '');
+      _this.onElementChanged('fact', value);
     }, _this.onOperatorChanged = function (value) {
       _this.onElementChanged('operator', value);
     }, _this.onValueChanged = function (value) {
@@ -7842,7 +7842,7 @@ var Rule = function (_React$Component) {
     key: 'render',
     value: function render() {
       var _props = this.props,
-          field = _props.field,
+          fact = _props.fact,
           operator = _props.operator,
           value = _props.value,
           translations = _props.translations,
@@ -7860,22 +7860,22 @@ var Rule = function (_React$Component) {
         _react2.default.createElement(controls.fieldSelector, {
           options: fields,
           title: translations.fields.title,
-          value: field,
+          value: fact,
           className: 'rule-fields ' + classNames.fields,
           handleOnChange: this.onFieldChanged,
           level: level
         }),
         _react2.default.createElement(controls.operatorSelector, {
-          field: field,
+          fact: fact,
           title: translations.operators.title,
-          options: getOperators(field),
+          options: getOperators(fact),
           value: operator,
           className: 'rule-operators ' + classNames.operators,
           handleOnChange: this.onOperatorChanged,
           level: level
         }),
         _react2.default.createElement(controls.valueEditor, {
-          field: field,
+          fact: fact,
           title: translations.value.title,
           operator: operator,
           value: value,
@@ -7898,7 +7898,7 @@ var Rule = function (_React$Component) {
       return {
         id: null,
         parentId: null,
-        field: null,
+        fact: null,
         operator: null,
         value: null,
         schema: null
@@ -7973,7 +7973,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ValueEditor = function ValueEditor(props) {
-  var field = props.field,
+  var fact = props.fact,
       operator = props.operator,
       value = props.value,
       handleOnChange = props.handleOnChange,
@@ -7995,7 +7995,7 @@ var ValueEditor = function ValueEditor(props) {
 ValueEditor.displayName = 'ValueEditor';
 
 ValueEditor.propTypes = {
-  field: _propTypes2.default.string,
+  fact: _propTypes2.default.string,
   operator: _propTypes2.default.string,
   value: _propTypes2.default.string,
   handleOnChange: _propTypes2.default.func,

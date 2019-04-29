@@ -4,9 +4,9 @@ import sinon from 'sinon';
 import Rule from './Rule';
 import { ActionElement, ValueSelector, ValueEditor } from './controls/index';
 
-describe('<Rule />', ()=> {
+describe('<Rule />', () => {
     let controls, classNames, schema, props;
-    beforeEach(()=>{
+    beforeEach(() => {
         //set defaults
         controls = {
             fieldSelector: React.Component,
@@ -23,15 +23,15 @@ describe('<Rule />', ()=> {
             fields: [],
             controls: controls,
             classNames: classNames,
-            getOperators: (field)=>{return []},
-            onPropChange: (field, value, id)=>{},
-            onRuleRemove: (ruleId, parentId)=>{},
+            getOperators: (fact) => { return [] },
+            onPropChange: (fact, value, id) => { },
+            onRuleRemove: (ruleId, parentId) => { },
             getLevel: () => 0
         }
         props = {
             key: 'key',
             id: 'id',
-            field: 'field',
+            fact: 'fact',
             value: 'value',
             operator: 'operator',
             schema: schema,
@@ -69,25 +69,25 @@ describe('<Rule />', ()=> {
         }
     });
 
-    it('should exist', ()=> {
+    it('should exist', () => {
         expect(Rule).to.exist;
     });
 
-    it('should have a className of "rule"', ()=> {
+    it('should have a className of "rule"', () => {
         const dom = shallow(<Rule {...props} />);
 
         expect(dom.find('div').hasClass('rule')).to.be.true;
     });
 
-    describe('field selector as <ValueSelector />', ()=> {
+    describe('fact selector as <ValueSelector />', () => {
         beforeEach(() => {
             controls.fieldSelector = ValueSelector;
         });
 
-        it('should have options set to expected fields', ()=> {
+        it('should have options set to expected fields', () => {
             const expected_fields = [
-                {name: 'firstName', label: 'First Label'},
-                {name: 'secondName', label: 'Second Label'}
+                { name: 'firstName', label: 'First Label' },
+                { name: 'secondName', label: 'Second Label' }
             ];
             schema.fields = expected_fields;
             const dom = shallow(<Rule {...props} />);
@@ -95,111 +95,111 @@ describe('<Rule />', ()=> {
             expect(dom.find('ValueSelector').props().options).to.equal(expected_fields);
         });
 
-        behavesLikeASelector('field', 'rule-fields', 'custom-fields-class');
+        behavesLikeASelector('fact', 'rule-fields', 'custom-fields-class');
     });
 
-    describe('operator selector as <ValueSelector />', ()=> {
+    describe('operator selector as <ValueSelector />', () => {
         beforeEach(() => {
             controls.operatorSelector = ValueSelector;
         });
 
-        it('should have options set to fields returned from "getOperators"', ()=> {
+        it('should have options set to fields returned from "getOperators"', () => {
             const expected_operators = [
-                {name: '=', label: '='},
-                {name: '!=', label: '!='}
+                { name: '=', label: '=' },
+                { name: '!=', label: '!=' }
             ]
-            schema.getOperators = (field)=>{ return expected_operators; };
+            schema.getOperators = (fact) => { return expected_operators; };
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ValueSelector').props().options).to.equal(expected_operators);
         });
 
-         it('should have field set to selected field', ()=> {
-            props.field = 'selected_field';
+        it('should have fact set to selected fact', () => {
+            props.fact = 'selected_field';
             const dom = shallow(<Rule {...props} />);
 
-            expect(dom.find('ValueSelector').props().field).to.equal('selected_field');
+            expect(dom.find('ValueSelector').props().fact).to.equal('selected_field');
         });
 
         behavesLikeASelector('operator', 'rule-operators', 'custom-operators-class');
     });
 
-    describe('value editor as <ValueEditor />', ()=> {
+    describe('value editor as <ValueEditor />', () => {
         beforeEach(() => {
             controls.valueEditor = ValueEditor;
         });
 
-        it('should have field set to selected field', ()=> {
-            props.field = 'selected_field';
+        it('should have fact set to selected fact', () => {
+            props.fact = 'selected_field';
             const dom = shallow(<Rule {...props} />);
 
-            expect(dom.find('ValueEditor').props().field).to.equal('selected_field');
+            expect(dom.find('ValueEditor').props().fact).to.equal('selected_field');
         });
 
-        it('should have operator set to selected operator', ()=> {
+        it('should have operator set to selected operator', () => {
             props.operator = 'selected_operator';
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ValueEditor').props().operator).to.equal('selected_operator');
         });
 
-        it('should have value set to specified value', ()=> {
+        it('should have value set to specified value', () => {
             props.value = 'specified_value';
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ValueEditor').props().value).to.equal('specified_value');
         });
 
-        it('should have the onChange method handler', ()=> {
+        it('should have the onChange method handler', () => {
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ValueEditor').props().handleOnChange).to.be.a('function');
         });
 
-        it('should trigger change handler',()=>{
-            const mockEvent = {target:{value:"foo"}};
+        it('should trigger change handler', () => {
+            const mockEvent = { target: { value: "foo" } };
             let onChange = sinon.spy();
             const dom = shallow(<ValueEditor handleOnChange={onChange} />);
             dom.find('input').simulate('change', mockEvent);
-            expect(onChange.called).to.equal(true);        
+            expect(onChange.called).to.equal(true);
         });
         //TODO spy on value change handler and verify it is triggered
     });
 
-    describe('rule remove action as <ActionElement />', ()=> {
+    describe('rule remove action as <ActionElement />', () => {
         beforeEach(() => {
             controls.removeRuleAction = ActionElement;
         });
 
-        it('should have label set to "x"', ()=> {
+        it('should have label set to "x"', () => {
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ActionElement').props().label).to.equal('x');
         });
 
-        it('should have the default className', ()=> {
+        it('should have the default className', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ActionElement').props().className).to.contain('rule-remove');
         });
 
-        it('should have the custom className', ()=> {
+        it('should have the custom className', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ActionElement').props().className).to.contain('custom-removeRule-class');
         });
 
-        it('should have the onChange method handler', ()=> {
+        it('should have the onChange method handler', () => {
             const dom = shallow(<Rule {...props} />);
 
             expect(dom.find('ActionElement').props().handleOnClick).to.be.a('function');
         });
-       
+
 
         //TODO spy on value change handler and verify it is triggered
     });
 
-    describe('#onElementChanged methods', () =>{
+    describe('#onElementChanged methods', () => {
         let actualProperty, actualValue, actualId;
-        beforeEach(()=>{
+        beforeEach(() => {
             schema.onPropChange = (property, value, id) => {
                 actualProperty = property;
                 actualValue = value;
@@ -207,7 +207,7 @@ describe('<Rule />', ()=> {
             }
         });
 
-        it('should call the onPropChange with the rule id', ()=> {
+        it('should call the onPropChange with the rule id', () => {
             const instance = shallow(<Rule {...props} />).instance();
             instance.onElementChanged('any_property', 'any_value');
 
@@ -216,19 +216,19 @@ describe('<Rule />', ()=> {
             expect(actualId).to.equal('id');
         });
 
-        describe('#onFieldChanged', ()=> {
-            it('should call the onPropChange with the rule id', ()=>{
+        describe('#onFieldChanged', () => {
+            it('should call the onPropChange with the rule id', () => {
                 const instance = shallow(<Rule {...props} />).instance();
-                instance.onFieldChanged('any_field');
+                instance.onFieldChanged('any_fact');
 
-                expect(actualProperty).to.equal('field');
-                expect(actualValue).to.equal('any_field');
+                expect(actualProperty).to.equal('fact');
+                expect(actualValue).to.equal('any_fact');
                 expect(actualId).to.equal('id');
             });
         });
 
-        describe('#onOperatorChanged', ()=> {
-            it('should call the onPropChange with the rule id', ()=>{
+        describe('#onOperatorChanged', () => {
+            it('should call the onPropChange with the rule id', () => {
                 const instance = shallow(<Rule {...props} />).instance();
                 instance.onOperatorChanged('any_operator');
 
@@ -238,8 +238,8 @@ describe('<Rule />', ()=> {
             });
         });
 
-        describe('#onValueChanged', ()=> {
-            it('should call the onPropChange with the rule id', ()=>{
+        describe('#onValueChanged', () => {
+            it('should call the onPropChange with the rule id', () => {
                 const instance = shallow(<Rule {...props} />).instance();
                 instance.onValueChanged('any_value');
 
@@ -251,12 +251,12 @@ describe('<Rule />', ()=> {
     });
 
 
-    describe('removeRule', ()=> {
-        it('should call the onRuleRemove with the rule and parent id', ()=>{
+    describe('removeRule', () => {
+        it('should call the onRuleRemove with the rule and parent id', () => {
             let myRuleId, myParentId;
             let anyEvent = {
-                preventDefault: ()=>{},
-                stopPropagation: ()=>{}
+                preventDefault: () => { },
+                stopPropagation: () => { }
             }
             schema.onRuleRemove = (ruleId, parentId) => {
                 myRuleId = ruleId;
@@ -271,27 +271,27 @@ describe('<Rule />', ()=> {
     });
 
     function behavesLikeASelector(value, defaultClassName, customClassName) {
-        it('should have the selected value set correctly', ()=> {
+        it('should have the selected value set correctly', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ValueSelector').props().value).to.equal(value);
         });
 
-        it('should have the default className', ()=> {
+        it('should have the default className', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ValueSelector').props().className).to.contain(defaultClassName);
         });
 
-        it('should have the custom className', ()=> {
+        it('should have the custom className', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ValueSelector').props().className).to.contain(customClassName);
         });
 
-        it('should have the onChange method handler', ()=> {
+        it('should have the onChange method handler', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ValueSelector').props().handleOnChange).to.be.a('function');
         });
 
-        it('should have the level of the Rule', ()=> {
+        it('should have the level of the Rule', () => {
             const dom = shallow(<Rule {...props} />);
             expect(dom.find('ValueSelector').props().level).to.equal(0);
         });
